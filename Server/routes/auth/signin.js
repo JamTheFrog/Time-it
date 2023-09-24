@@ -19,7 +19,9 @@ router.post(`${baseEndpoint}/signin`, async (req,res) => {
 
     if(!isMatch) return res.status(401).send({msg: "Auth failed"})
 
-    const token = jwt.sign({id: exsistingUser._id, role: exsistingUser.role}, keys.JWT_SECRET_KEY, {expiresIn:"2h"})
+    console.log(exsistingUser.type)
+    console.log({id: exsistingUser._id, type: exsistingUser.type})
+    const token = jwt.sign({id: exsistingUser._id, type: exsistingUser.type}, keys.JWT_SECRET_KEY, {expiresIn:"2h"})
     res.send({token})
 })
 

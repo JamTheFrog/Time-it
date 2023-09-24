@@ -8,6 +8,8 @@ const keys = require("./keys/keys")
 
 //middleware require statements
 
+const checkUser = require("./middlewares/check-user")
+const checkAuth = require("./middlewares/check-auth")
 
 //middleware setup
 app.set("trust proxy", true)
@@ -18,15 +20,25 @@ app.use(cors())
 
 require("./models/user")
 require("./models/session")
+
 //Auth routes require statements
+
 const signInRouter = require("./routes/auth/signin")
 const signUpRouter = require("./routes/auth/signup")
 
 //Session route require statements
 
+const createSessionRouter = require("./routes/sessions/create-session")
+
 //Auth router middleware setup
 
+app.use(checkUser)
+
+
 //Session router middleware setup
+
+app.use(createSessionRouter)
+
 app.use(signInRouter)
 app.use(signUpRouter)
 
