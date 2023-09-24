@@ -8,3 +8,5 @@ const sessionSchema = new Schema({
     timeblocks: {type: Array, required: true},
     public: {type: Boolean, required: true}
 })
+
+mongoose.model("sessions", sessionSchema)
