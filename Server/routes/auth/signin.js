@@ -19,6 +19,8 @@ router.post(`${baseEndpoint}/signin`, async (req,res) => {
 
     if(!isMatch) return res.status(401).send({msg: "Auth failed"})
 
-    const token = jwt.sign({id: exsistingUser._id, role: exsistingUser.role}, keys.JWT_SECRET_KEY, {expriesIn:"24h"})
+    const token = jwt.sign({id: exsistingUser._id, role: exsistingUser.role}, keys.JWT_SECRET_KEY, {expiresIn:"2h"})
     res.send({token})
 })
+
+module.exports = router
