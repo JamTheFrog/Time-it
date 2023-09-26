@@ -9,7 +9,7 @@ const keys = require("./keys/keys")
 //middleware require statements
 
 const checkUser = require("./middlewares/check-user")
-const checkAuth = require("./middlewares/check-auth")
+
 
 //middleware setup
 app.set("trust proxy", true)
