@@ -6,9 +6,9 @@ const Session = mongoose.model("sessions");
 
 const baseEndpoint = "/api/session";
 
-router.post(`${baseEndpoint}`, checkAuth, async (req, res) => {
+router.put(`${baseEndpoint}/:id`, checkAuth, async (req, res) => {
   const { title, timeBlocks, public } = req.body;
-  console.log(req.currentUser);
+
   if (req.currentUser.type !== "free")
     return res.status(403).send({ msg: "Not Authorized" });
   const sessionDoc = await Session.create({

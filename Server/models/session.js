@@ -2,10 +2,13 @@ const mongoose = require("mongoose")
 const { Schema } = mongoose
 
 
-const timeBlockSchema = new Schema ({
+const timeBlockSchema = new Schema({
+    id: {type: String, required: true},
     title: {type: String, required: true},
     duration: {type: Number, required: true},
-    description: {type: String}
+    description: {type: String},
+    
+    
 })
 
 const sessionSchema = new Schema ({

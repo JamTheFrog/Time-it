@@ -8,28 +8,24 @@ const baseEndpoint = "/api/users";
 router.post(
   `${baseEndpoint}/signup`,
   [
-    body("email")
-      .trim()
-      .isEmail()
-      .withMessage("Email must be valid email"),
+    body("email").trim().isEmail().withMessage("Email must be valid email"),
     body("password")
       .trim()
       .isLength(6)
-      .withMessage("Password length too short, minimum 6 characters required"), 
-    body("password2").custom((value, {req}) => {
-      if(value !== req.body.password) {
-        throw new Error("Passwords do not match")
+      .withMessage("Password length too short, minimum 6 characters required"),
+    body("password2").custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error("Passwords do not match");
       }
-      return true
-    })
+      return true;
+    }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()){
-        
+    if (!errors.isEmpty()) {
       const errorMessages = errors.array().map((error) => error.msg);
       return res.status(400).json({ messages: errorMessages });
-    } 
+    }
 
     const { email, password } = req.body;
     const exsistingUser = await User.findOne({ email });

@@ -1,28 +1,32 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const keys = require("../../keys/keys")
+const express = require("express");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const keys = require("../../keys/keys");
 
-const User = mongoose.model("users")
+const User = mongoose.model("users");
 
-const router = express.Router()
-const baseEndpoint = "/api/users"
+const router = express.Router();
+const baseEndpoint = "/api/users";
 
-router.post(`${baseEndpoint}/signin`, async (req,res) => {
-    const {email, password} = req.body
-    
-    const exsistingUser = await User.findOne({email})
-    if(!exsistingUser) return res.status(401).send({msg: "Auth failed"})
+router.post(`${baseEndpoint}/signin`, async (req, res) => {
+  const { email, password } = req.body;
 
-    const isMatch = await bcrypt.compare(password, exsistingUser.password)
+  const exsistingUser = await User.findOne({ email });
+  if (!exsistingUser) return res.status(401).send({ msg: "Auth failed" });
 
-    if(!isMatch) return res.status(401).send({msg: "Auth failed"})
+  const isMatch = await bcrypt.compare(password, exsistingUser.password);
 
-    console.log(exsistingUser.type)
-    console.log({id: exsistingUser._id, type: exsistingUser.type})
-    const token = jwt.sign({id: exsistingUser._id, type: exsistingUser.type}, keys.JWT_SECRET_KEY, {expiresIn:"2h"})
-    res.send({token})
-})
+  if (!isMatch) return res.status(401).send({ msg: "Auth failed" });
 
-module.exports = router
+  console.log(exsistingUser.type);
+  console.log({ id: exsistingUser._id, type: exsistingUser.type });
+  const token = jwt.sign(
+    { id: exsistingUser._id, type: exsistingUser.type },
+    keys.JWT_SECRET_KEY,
+    { expiresIn: "2h" }
+  );
+  res.send({ token });
+});
+
+module.exports = router;
