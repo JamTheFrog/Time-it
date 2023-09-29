@@ -5,7 +5,7 @@ const checkAuth = require("../../middlewares/check-auth");
 const Session = mongoose.model("sessions");
 const { body, validationResult } = require("express-validator");
 
-const baseEndpoint = "/api/session";
+const baseEndpoint = "/api/session/:sessionId/timeblock";
 
 const generateUuid = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
@@ -19,7 +19,7 @@ const generateUuid = () => {
 };
 
 router.post(
-  `${baseEndpoint}/:id/timeblock`,
+  `${baseEndpoint}`,
   checkAuth,
   [
     body("title").isEmpty().withMessage("Title cannot be empty"),
@@ -37,10 +37,10 @@ router.post(
       return res.status(400).json({ messages: errorMessages });
     }
     
-      const { id } = req.params;
+      const { sessionId } = req.params;
       const { title, duration, description } = req.body;
 
-      const session = await Session.findById(id);
+      const session = await Session.findById(sessionId);
 
       if (!session)
         return res.status(404).send({ message: "Session not found" });
