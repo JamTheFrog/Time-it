@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const checkAuth = require("../../middlewares/check-auth");
+const checkAuth = require("../../../middlewares/check-auth");
 const Session = mongoose.model("sessions");
 const { body, validationResult } = require("express-validator");
 
@@ -24,7 +24,7 @@ router.post(
   [
     body("title").isEmpty().withMessage("Title cannot be empty"),
     body("duration").custom((value) => {
-      if (value < 1) {
+      if (value < 1 && value) {
         throw new Error("Your timer cannot be shorter than 1 second");
       }
       return true;
@@ -42,8 +42,9 @@ router.post(
 
       const session = await Session.findById(sessionId);
 
-      if (!session)
-        return res.status(404).send({ message: "Session not found" });
+      if (!session) return res.status(404).send({ message: "Session not found" });
+
+      if(req.currentUser.id !== session.owner) return res.status(403).send("Not Authorized")
 
       const newTimeBlock = {
         id: generateUuid(),

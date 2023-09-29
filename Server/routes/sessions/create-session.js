@@ -10,7 +10,7 @@ router.post(`${baseEndpoint}`, checkAuth, async (req, res) => {
   const { title, timeBlocks, public } = req.body;
   console.log(req.currentUser);
   if (req.currentUser.type !== "free")
-    return res.status(403).send({ msg: "Not Authorized" });
+    return res.status(403).send("Not Authorized");
   const sessionDoc = await Session.create({
     title,
     ownerId: req.currentUser.id,

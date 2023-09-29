@@ -28,6 +28,10 @@ const signUpRouter = require("./routes/auth/signup");
 //Session route require statements
 
 const createSessionRouter = require("./routes/sessions/create-session");
+const updateSessionRouter = require("./routes/sessions/update-session");
+const createTimeBlockRouter = require("./routes/sessions/timeblocks/create-timeblock")
+const updateTimeBlockRouter = require("./routes/sessions/timeblocks/update-timeblock")
+
 
 //Auth router middleware setup
 
@@ -36,6 +40,9 @@ app.use(checkUser);
 //Session router middleware setup
 
 app.use(createSessionRouter);
+app.use(updateSessionRouter)
+app.use(createTimeBlockRouter)
+app.use(updateTimeBlockRouter)
 
 app.use(signInRouter);
 app.use(signUpRouter);
