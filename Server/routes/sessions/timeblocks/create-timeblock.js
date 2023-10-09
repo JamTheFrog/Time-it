@@ -36,30 +36,31 @@ router.post(
       const errorMessages = errors.array().map((error) => error.msg);
       return res.status(400).json({ messages: errorMessages });
     }
-    
-      const { sessionId } = req.params;
-      const { title, duration, description } = req.body;
 
-      const session = await Session.findById(sessionId);
+    const { sessionId } = req.params;
+    const { title, duration, description } = req.body;
 
-      if (!session) return res.status(404).send({ message: "Session not found" });
+    const session = await Session.findById(sessionId);
 
-      if(req.currentUser.id !== session.owner) return res.status(403).send("Not Authorized")
+    if (!session) return res.status(404).send({ message: "Session not found" });
 
-      const newTimeBlock = {
-        id: generateUuid(),
-        title: title,
-        duration: duration,
-        description: description,
-      };
+    if (req.currentUser.id !== session.owner)
+      return res.status(403).send("Not Authorized");
 
-      const updatedTimeBlocks = [...session.timeBlocks, newTimeBlock];
+    const newTimeBlock = {
+      id: generateUuid(),
+      title: title,
+      duration: duration,
+      description: description,
+    };
 
-      session.timeBlocks = updatedTimeBlocks;
+    const updatedTimeBlocks = [...session.timeBlocks, newTimeBlock];
 
-      await session.save();
+    session.timeBlocks = updatedTimeBlocks;
 
-      res.status(201).send(newTimeBlock);
+    await session.save();
+
+    res.status(201).send(newTimeBlock);
   }
 );
 

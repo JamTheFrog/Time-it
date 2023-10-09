@@ -13,7 +13,7 @@ router.put(
   [
     body("title").isEmpty().withMessage("Title cannot be empty"),
     body("duration").custom((value) => {
-      if (value < 1) {
+      if (value > 1 && value < 259201) {
         throw new Error("Your timer cannot be shorter than 1 second");
       }
       return true;
