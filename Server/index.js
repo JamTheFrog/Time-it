@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 const keys = require("./keys/keys");
 
-//middleware require statements
+//middleware require statementss
 
 const checkUser = require("./middlewares/check-user");
 
